@@ -27,6 +27,7 @@ async function createUser(name, cpf, phone, birthDate, userType, email, password
 }
 
 
+<<<<<<< HEAD
 
 async function updateUser(idUser, name, cpf, phone, birthDate, email, password) {
   const connection = await mysql.createConnection(databaseConfig);
@@ -59,6 +60,18 @@ async function updateUser(idUser, name, cpf, phone, birthDate, email, password) 
     await connection.end();
   }
 }
+=======
+async function updateUser(idUser, name, cpf, phone, birthDate, email){
+    const connection = await mysql.createConnection(databaseConfig);  
+
+    const updateUser = "UPDATE user SET name = ?, cpf = ?, phone = ?,birthDate = STR_TO_DATE(?, '%d/%m/%Y'), email = ?  WHERE idUser = ?";
+    
+    await connection.query(updateUser,[name, cpf, phone, birthDate, email, idUser])
+    
+    await connection.end();
+};
+
+>>>>>>> 8ee4def (Final_CleanWorld)
 async function deleteUser(idUser){
     const connection = await mysql.createConnection(databaseConfig);
 
