@@ -27,16 +27,38 @@ async function createUser(name, cpf, phone, birthDate, userType, email, password
 }
 
 
-async function updateUser(idUser, name, cpf, phone, birthDate, email){
-    const connection = await mysql.createConnection(databaseConfig);  
 
-    const updateUser = "UPDATE user SET name = ?, cpf = ?, phone = ?,birthDate = STR_TO_DATE(?, '%d/%m/%Y'), email = ?  WHERE idUser = ?";
-    
-    await connection.query(updateUser,[name, cpf, phone, birthDate, email, idUser])
-    
+async function updateUser(idUser, name, cpf, phone, birthDate, email, password) {
+  const connection = await mysql.createConnection(databaseConfig);
+
+  try {
+    let query, params;
+
+    if (password && password.trim() !== "") {
+      // Criptografa a nova senha
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      query = `
+        UPDATE user 
+        SET name = ?, cpf = ?, phone = ?, birthDate = STR_TO_DATE(?, '%d/%m/%Y'), email = ?, password = ?
+        WHERE idUser = ?
+      `;
+      params = [name, cpf, phone, birthDate, email, hashedPassword, idUser];
+    } else {
+      query = `
+        UPDATE user 
+        SET name = ?, cpf = ?, phone = ?, birthDate = STR_TO_DATE(?, '%d/%m/%Y'), email = ?
+        WHERE idUser = ?
+      `;
+      params = [name, cpf, phone, birthDate, email, idUser];
+    }
+
+    await connection.query(query, params);
+  } finally {
     await connection.end();
-};
-
+  }
+}
 async function deleteUser(idUser){
     const connection = await mysql.createConnection(databaseConfig);
 

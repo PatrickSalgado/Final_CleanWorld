@@ -45,13 +45,11 @@ async function createUser(req, res) {
 async function updateUser(req, res) {
   try {
     const { idUser } = req.params;
-    const { name, cpf, phone, birthDate, email} = req.body;
+    const { name, cpf, phone, birthDate, email, password } = req.body; // ← aqui
 
-    await userService.updateUser(idUser, name, cpf, phone, birthDate, email);
+    await userService.updateUser(idUser, name, cpf, phone, birthDate, email, password); // ← envia a senha
 
-    
-
-    res.status(201).json({message: "Sucess"});
+    res.status(201).json({ message: "Success" });
   } catch (error) {
     res.status(500).send({
       message: "Error updating user!",
