@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "expo": "^51.0.0",
+    "expo-checkbox": "^5.0.7",
     "expo-linear-gradient": "~13.0.2",
     "expo-status-bar": "~1.12.1",
     "jwt-decode": "^4.0.0",
