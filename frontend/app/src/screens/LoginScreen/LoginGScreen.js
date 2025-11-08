@@ -23,7 +23,7 @@ export default function LoginGScreen({ navigation }) {
 
     try {console.log(email, password);
         
-      const response = await axios.post(`https://2a600c282efc.ngrok-free.app/api/login`, 
+      const response = await axios.post(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/login`, 
         { email, password },
         { timeout: 10000 }
       );

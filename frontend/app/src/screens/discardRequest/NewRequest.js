@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView,
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AppContext } from "../../context/AppContext";
 
-const BASE_URL = "https://2a600c282efc.ngrok-free.app";
+const BASE_URL = "https://subattenuated-epithetically-eryn.ngrok-free.dev";
 
 const VOLUME_SIZES = ["Pequeno", "Médio", "Grande", "Muito grande"];
 const WASTE_TYPES = ["", "Papel", "Plástico", "Metal", "Vidro", "Orgânico", "Eletrônico", "Madeira", "Entulho", "Outros"];
