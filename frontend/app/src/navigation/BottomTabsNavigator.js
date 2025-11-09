@@ -23,6 +23,7 @@ import OrderAccepted from '../screens/EnterpriseScreen/OrderAccepted';
 import UserMenu from '../screens/DiscardingScreen/UserMenu';
 import EnterpriseMenu from '../screens/EnterpriseScreen/EnterpriseMenu';
 import ListVehicle from '../screens/EnterpriseScreen/ListVehicle';
+import NewRequest from "../screens/discardRequest/NewRequest";
 
 const TAB_CONFIG = {
   EnterpriseProfile: {
@@ -64,6 +65,10 @@ const TAB_CONFIG = {
   RegisterVehicle: {
     label: 'Veículos',
     icon: 'car-outline',
+  },
+  newRequest: {
+    label: 'Nova Solicitação de Descarte',
+    icon: 'leaf-outline',
   },
 };
 
@@ -183,6 +188,7 @@ export default function BottomTabsNavigator() {
             <Tab.Screen name="DiscardingProfile" component={DiscardingProfile} />
             <Tab.Screen name="MaterialDiscarding" component={MaterialDiscarding} />
             <Tab.Screen name="OrdenAccept" component={OrdenAccept} />
+            <Tab.Screen name="New Discard Request" component={NewRequest} />
           </>
         )}
 
@@ -194,6 +200,7 @@ export default function BottomTabsNavigator() {
             <Tab.Screen name="ListVehicle" component={ListVehicle} />
             <Tab.Screen name="OrderList" component={OrderList} />
             <Tab.Screen name="OrderAccepted" component={OrderAccepted} />
+
           </>
         )}
       </Tab.Navigator>
