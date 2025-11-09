@@ -1,5 +1,8 @@
-import React from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet,  Image, ScrollView, Alert} from 'react-native';
+import React, { useState } from 'react';
+import {
+  View, Text, TextInput, TouchableOpacity,
+  StyleSheet, Image, ScrollView, Alert, Modal, Button
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import axios from "axios";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -50,6 +53,8 @@ export default function RegisterUserTwo({ navigation, route }) {
   const { name, cpf, phone, birthDate, userType } = route.params;
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isAgreed, setIsAgreed] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const validateFields = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -137,7 +142,56 @@ export default function RegisterUserTwo({ navigation, route }) {
             secureTextEntry
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          {/* Checkbox de aceite dos Termos */}
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              value={isAgreed}
+              onValueChange={setIsAgreed}
+              color={isAgreed ? '#2E8B57' : undefined}
+            />
+            <Text style={styles.checkboxText}>
+              Li e concordo com os{' '}
+              <Text
+                style={styles.link}
+                onPress={() => setShowModal(true)} // ✅ Abre o modal em vez de navegar
+              >
+                Termos de Uso e Política de Privacidade
+              </Text>
+            </Text>
+          </View>
+
+
+          {/* Modal com o termo */}
+          <Modal visible={showModal} animationType="slide">
+            <View style={{ flex: 1, backgroundColor: '#fff', padding: 20 }}>
+              <ScrollView>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 15 }}>
+                  Termo de Uso e Política de Privacidade – CleanWorld
+                </Text>
+
+                <Text style={{ fontSize: 16, textAlign: 'justify', marginBottom: 15, lineHeight: 22 }}>
+                  O aplicativo CleanWorld tem como objetivo facilitar a gestão de coletas e descartes de materiais recicláveis,
+                  promovendo práticas sustentáveis. Ao utilizar o aplicativo, o usuário concorda com os termos descritos neste documento.
+                </Text>
+                <Text style={{ fontSize: 16, textAlign: 'justify', marginBottom: 15, lineHeight: 22 }}>
+                  O CleanWorld respeita sua privacidade e está comprometido em proteger seus dados pessoais, em conformidade com a LGPD.
+                  As informações coletadas são utilizadas exclusivamente para garantir o bom funcionamento do aplicativo e aprimorar sua experiência.
+                </Text>
+                <Text style={{ fontSize: 16, textAlign: 'justify', lineHeight: 22 }}>
+                  Ao aceitar este termo, o usuário concorda com a coleta e tratamento de seus dados pessoais conforme descrito.
+                  Caso não concorde, deve interromper o uso do aplicativo e solicitar a exclusão de suas informações.
+                </Text>
+              </ScrollView>
+
+              <Button title="Fechar" color="#2E8B57" onPress={() => setShowModal(false)} />
+            </View>
+          </Modal>
+
+          <TouchableOpacity
+            style={[styles.button, { opacity: isAgreed ? 1 : 0.6 }]}
+            onPress={handleRegister}
+            disabled={!isAgreed}
+          >
             <Text style={styles.buttonText}>Finalizar Cadastro</Text>
           </TouchableOpacity>
         </Animatable.View>
