@@ -21,6 +21,7 @@ export default function EnterpriseProfile({ navigation }) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (!idCollector) {
@@ -77,8 +78,12 @@ export default function EnterpriseProfile({ navigation }) {
           cnpj: unformatCnpj(cnpj),
           phone,
           email,
+          password,
         },
-        { timeout: 10000 }
+        {
+           headers: { 'Content-Type': 'application/json' },
+          timeout: 10000 
+        }
       );
       Alert.alert('Sucesso', 'Alterações salvas com sucesso!');
     } catch (error) {
@@ -86,6 +91,7 @@ export default function EnterpriseProfile({ navigation }) {
       Alert.alert('Erro', error.response?.data?.message || 'Não foi possível salvar as alterações.');
     } finally {
       setIsLoading(false);
+      setPassword('')
     }
   };
 
@@ -120,6 +126,14 @@ export default function EnterpriseProfile({ navigation }) {
             keyboardType="email-address"
             accessibilityLabel="Email da empresa"
           />
+          <LabelInput
+  label="Senha"
+  value={password}
+  onChangeText={setPassword}
+  secureTextEntry
+  accessibilityLabel="Senha da empresa"
+/>
+
           <TouchableOpacity
             style={[styles.saveButton, isLoading && styles.saveButtonDisabled]}
             onPress={handleSaveChanges}
