@@ -185,10 +185,12 @@ export default function BottomTabsNavigator() {
         {/* Usuário tipo 0 (Descartador) */}
         {userType === 0 && (
           <>
+          
             <Tab.Screen name="DiscardingProfile" component={DiscardingProfile} />
-            <Tab.Screen name="MaterialDiscarding" component={MaterialDiscarding} />
+            <Tab.Screen name="Requisição Descarte" component={NewRequest} />
+            {/*<Tab.Screen name="MaterialDiscarding" component={MaterialDiscarding} />*/}
             <Tab.Screen name="OrdenAccept" component={OrdenAccept} />
-            <Tab.Screen name="New Discard Request" component={NewRequest} />
+            
           </>
         )}
 

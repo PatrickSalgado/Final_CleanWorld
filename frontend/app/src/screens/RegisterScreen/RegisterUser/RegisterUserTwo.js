@@ -83,7 +83,7 @@ export default function RegisterUserTwo({ navigation, route }) {
     if (!validateFields()) return;
 
     try {
-      const response = await axios.post(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/user`, {
+      const response = await axios.post(`https://2a600c282efc.ngrok-free.app/api/user`, {
       name, cpf, phone, birthDate, userType, email, password
     });
 

@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView,
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AppContext } from "../../context/AppContext";
 
-const BASE_URL = "https://subattenuated-epithetically-eryn.ngrok-free.dev";
+const BASE_URL = "https://2a600c282efc.ngrok-free.app";
 
 const VOLUME_SIZES = ["Pequeno", "Médio", "Grande", "Muito grande"];
 const WASTE_TYPES = ["", "Papel", "Plástico", "Metal", "Vidro", "Orgânico", "Eletrônico", "Madeira", "Entulho", "Outros"];
@@ -79,7 +79,7 @@ export default function RegisterOrderScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Solicitação de Descarte</Text>
+      <Text style={styles.title}>♻️ Solicitar Descarte</Text>
 
       <Text style={styles.label}>Quantidade de Volumes *</Text>
       <TextInput
@@ -108,7 +108,7 @@ export default function RegisterOrderScreen({ navigation }) {
         style={styles.input}
         value={collectionDate}
         onChangeText={setCollectionDate}
-        placeholder="AAAA-MM-DD"
+        placeholder="DD-MM-AAAA"
         onFocus={() => setShowDatePicker(true)}
       />
 
@@ -123,7 +123,7 @@ export default function RegisterOrderScreen({ navigation }) {
               const y = d.getFullYear();
               const m = String(d.getMonth() + 1).padStart(2, "0");
               const day = String(d.getDate()).padStart(2, "0");
-              setCollectionDate(`${y}-${m}-${day}`);
+              setCollectionDate(`${day}-${m}-${y}`);
             }
           }}
         />
@@ -155,8 +155,8 @@ export default function RegisterOrderScreen({ navigation }) {
         />
       )}
 
-      <Text style={styles.label}>Endereço *</Text>
-      <TextInput style={styles.input} value={address} onChangeText={setAddress} placeholder="Rua, número..." />
+      <Text style={styles.label}>Endereço Completo *</Text>
+      <TextInput style={styles.input} value={address} onChangeText={setAddress} placeholder="Rua, número, bairro e cidade ..." />
 
       <Text style={styles.label}>Descrição do Material</Text>
       <TextInput
@@ -167,17 +167,13 @@ export default function RegisterOrderScreen({ navigation }) {
       />
 
       <Text style={styles.label}>Tipo de Resíduo</Text>
-      <View style={styles.rowWrap}>
-        {WASTE_TYPES.map((opt) => (
-          <TouchableOpacity
-            key={opt}
-            style={[styles.chip, wasteType === opt && styles.chipActive]}
-            onPress={() => setWasteType(opt)}
-          >
-            <Text style={[styles.chipText, wasteType === opt && styles.chipTextActive]}>{opt || "Nenhum"}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <TextInput
+        style={[styles.input, { minHeight: 40 }]}
+        value={materialDescription}
+        onChangeText={setWasteType}
+        placeholder="Resíduo Hospitalar, Eletrônico, Reciclável, Outros ..." 
+        multiline
+      /> 
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Enviar Solicitação</Text>

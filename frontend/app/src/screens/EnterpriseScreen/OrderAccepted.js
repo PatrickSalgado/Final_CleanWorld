@@ -17,7 +17,7 @@ export default function OrderAccepted() {
     }
 
     try {
-      const response = await axios.get(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/registerOrder`, {
+      const response = await axios.get(`https://2a600c282efc.ngrok-free.app/api/registerOrder`, {
         params: { idCollector }
       });
       const data = response.data || [];

@@ -25,7 +25,7 @@ export default function LoginGEnterprise({ navigation }) {
     }
     try {
       const response = await axios.post(
-        `https://subattenuated-epithetically-eryn.ngrok-free.dev/api/collector/login`,
+        `https://2a600c282efc.ngrok-free.app/api/collector/login`,
         { email, password },
         { timeout: 10000 }
       );
