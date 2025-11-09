@@ -7,13 +7,14 @@ async function getAllCollector(){
     const connection = await mysql.createConnection(databaseConfig);
 
     const [rows] = await connection.query(`SELECT
-    collector.idCollector,
-    collector.nameEnterprise,
-    collector.cnpj,
-    collector.phone,
-    collector.userType,
-    collector.email,
-    collector.password,
+    SELECT 
+      idCollector,
+      nameEnterprise,
+      cnpj,
+      phone,
+      userType,
+      email
+    FROM collector
     `);
     await connection.end();
     return rows;
@@ -30,19 +31,36 @@ async function createCollector(nameEnterprise, cnpj, phone, userType, email, pas
     await connection.end();
 }
 
-async function updateCollector(idCollector,nameEnterprise, cnpj, phone,userType, email, password ){
+async function updateCollector(idCollector, nameEnterprise, cnpj, phone, userType, email, password) {
+  const connection = await mysql.createConnection(databaseConfig);
+
+  let query, params;
+
+  if (password && password.trim() !== "") {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-    const connection = await mysql.createConnection(databaseConfig);
+    query = `
+      UPDATE collector 
+      SET nameEnterprise = ?, cnpj = ?, phone = ?, userType = ?, email = ?, password = ?
+      WHERE idCollector = ?
+    `;
+    params = [nameEnterprise, cnpj, phone, userType || 2, email, passwordHash, idCollector];
+  } else {
+    query = `
+      UPDATE collector 
+      SET nameEnterprise = ?, cnpj = ?, phone = ?, userType = ?, email = ?
+      WHERE idCollector = ?
+    `;
+    params = [nameEnterprise, cnpj, phone, userType || 2, email, idCollector];
+  }
 
-    const updateCollector = "UPDATE collector SET nameEnterprise = ?,cnpj = ?, phone = ?,userType = ?, email = ?, password = ? WHERE idCollector = ?";
-
-    await connection.query(updateCollector,[nameEnterprise, cnpj, phone,userType, email, passwordHash , idCollector]);
-
-    await connection.end();
+  await connection.query(query, params);
+  await connection.end();
 }
 
-async function deleteColetor (idCollector){
+
+
+async function deleteCollector (idCollector){
     
     const connection = await mysql.createConnection(databaseConfig);
 
@@ -105,7 +123,7 @@ module.exports = {
     getAllCollector,
     createCollector,
     updateCollector,
-    deleteColetor,
+    deleteCollector,
     getCollectorById,
     validateLogin,
 };

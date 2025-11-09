@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import axios from "axios";
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-
+import Checkbox from 'expo-checkbox';
 
 function StepProgress({ currentStep }) {
   const steps = [
@@ -50,6 +50,8 @@ export default function RegisterUserTwo({ navigation, route }) {
   const { name, cpf, phone, birthDate, userType } = route.params;
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isAgreed, setIsAgreed] = React.useState(false);
+
 
   const validateFields = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,10 +75,15 @@ export default function RegisterUserTwo({ navigation, route }) {
   };
 
   const handleRegister = async () => {
+    if (!isAgreed) {
+      Alert.alert('Atenção', 'Você precisa concordar com os Termos de Uso para continuar.');
+      return;
+    }
+
     if (!validateFields()) return;
 
     try {
-      const response = await axios.post(`https://2a600c282efc.ngrok-free.app/api/user`, {
+      const response = await axios.post(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/user`, {
       name, cpf, phone, birthDate, userType, email, password
     });
 
@@ -136,6 +143,23 @@ export default function RegisterUserTwo({ navigation, route }) {
             onChangeText={setPassword}
             secureTextEntry
           />
+          <View style={styles.checkboxContainer}>
+  <Checkbox
+    value={isAgreed}
+    onValueChange={setIsAgreed}
+    color={isAgreed ? '#2E8B57' : undefined}
+  />
+  <Text style={styles.checkboxText}>
+    Li e concordo com os{' '}
+    <Text
+      style={styles.link}
+      onPress={() => navigation.navigate('TermosDeUso')}
+    >
+      Termos de Uso e Política de Privacidade
+    </Text>
+  </Text>
+</View>
+
 
           <TouchableOpacity style={styles.button} onPress={handleRegister}>
             <Text style={styles.buttonText}>Finalizar Cadastro</Text>
@@ -271,4 +295,22 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1,
   },
+  checkboxContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop: 20,
+  marginBottom: 10,
+  flexWrap: 'wrap',
+},
+checkboxText: {
+  marginLeft: 10,
+  fontSize: 14,
+  color: '#2E7D32',
+  flexShrink: 1,
+},
+link: {
+  color: '#1E88E5',
+  textDecorationLine: 'underline',
+},
+
 });
