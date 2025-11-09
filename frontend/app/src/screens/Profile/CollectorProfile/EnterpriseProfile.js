@@ -32,8 +32,8 @@ export default function EnterpriseProfile({ navigation }) {
 
     const fetchEnterpriseData = async () => {
       try {
-        const res = await axios.get(`https://2a600c282efc.ngrok-free.app/api/collector/${idCollector}`);
-        const data = res.data;
+        const res = await axios.get(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/collector/${idCollector}`);
+        const data = Array.isArray(res.data) ? res.data[0] : res.data;
         setNameEnterprise(data.nameEnterprise || '');
         setCnpj(formatCnpj(data.cnpj || ''));
         setPhone(data.phone || '');
@@ -72,7 +72,7 @@ export default function EnterpriseProfile({ navigation }) {
     setIsLoading(true);
     try {
       await axios.put(
-        `https://2a600c282efc.ngrok-free.app/api/collector/${idCollector}`,
+        `https://subattenuated-epithetically-eryn.ngrok-free.dev/api/collector/${idCollector}`,
         {
           nameEnterprise,
           cnpj: unformatCnpj(cnpj),

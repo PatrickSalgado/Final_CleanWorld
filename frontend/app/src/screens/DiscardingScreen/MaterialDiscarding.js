@@ -28,7 +28,7 @@ export default function MaterialDiscarding({ navigation }) {
 
   const fetchWasteTypes = async () => {
     try {
-      const response = await axios.get('https://2a600c282efc.ngrok-free.app/api/wasteType');
+      const response = await axios.get('https://subattenuated-epithetically-eryn.ngrok-free.dev/api/wasteType');
       setWasteTypes(response.data);
     } catch (error) {
       console.error('Erro ao buscar tipos de descarte:', error);
@@ -59,7 +59,7 @@ export default function MaterialDiscarding({ navigation }) {
     const wasteTypeToSend = customWasteType ? customWasteType : selectedWasteType;
 
     try {
-      const response = await axios.post(`https://2a600c282efc.ngrok-free.app/api/registerOrder`, {
+      const response = await axios.post(`https://subattenuated-epithetically-eryn.ngrok-free.dev/api/registerOrder`, {
         quantityVolume,
         volumeSize,
         collectionDate,
