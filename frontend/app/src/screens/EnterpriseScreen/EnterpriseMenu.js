@@ -23,8 +23,8 @@ export default function EnterpriseMenu({ navigation }) {
     const fetchStats = async () => {
       try {
         const [registerVehicle, registerOrder] = await Promise.all([
-          axios.get(`https://2a600c282efc.ngrok-free.app/api/registerVehicle/count/${idCollector}`),
-          axios.get(`https://2a600c282efc.ngrok-free.app/api/registerOrder/status/count/${idCollector}`)
+          axios.get(` https://84975bd346fc.ngrok-free.app/api/registerVehicle/count/${idCollector}`),
+          axios.get(` https://84975bd346fc.ngrok-free.app/api/registerOrder/status/count/${idCollector}`)
         ]);
 
     setStats({

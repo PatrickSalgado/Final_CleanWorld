@@ -20,7 +20,7 @@ export default function DiscardingProfile({ navigation }) {
 
   const fetchDiscarderData = async () => {
     try {
-      const response = await axios.get(`https://2a600c282efc.ngrok-free.app/api/user/${idUser}`);
+      const response = await axios.get(` https://84975bd346fc.ngrok-free.app/api/user/${idUser}`);
       if (response.data && Array.isArray(response.data) && response.data[0]) {
         const { name, cpf, phone, birthDate, email } = response.data[0];
         setName(name || '');
@@ -109,7 +109,7 @@ export default function DiscardingProfile({ navigation }) {
     }
 
     try {
-      await axios.put(`https://2a600c282efc.ngrok-free.app/api/user/${idUser}`, {
+      await axios.put(` https://84975bd346fc.ngrok-free.app/api/user/${idUser}`, {
         name,
         cpf: cpf.replace(/\D/g, ''),
         phone: phone.replace(/\D/g, ''),

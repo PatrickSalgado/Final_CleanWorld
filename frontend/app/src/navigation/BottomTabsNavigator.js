@@ -187,7 +187,7 @@ export default function BottomTabsNavigator() {
           <>
           
             <Tab.Screen name="DiscardingProfile" component={DiscardingProfile} />
-            <Tab.Screen name="Requisição Descarte" component={NewRequest} />
+            <Tab.Screen name="Solicitar" component={NewRequest} />
             {/*<Tab.Screen name="MaterialDiscarding" component={MaterialDiscarding} />*/}
             <Tab.Screen name="OrdenAccept" component={OrdenAccept} />
             

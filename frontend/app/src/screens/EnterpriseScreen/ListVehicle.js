@@ -29,7 +29,7 @@ export default function ListVehicle() {
     }
 
     try {
-      const response = await axios.get(`https://2a600c282efc.ngrok-free.app/api/registerVehicle`, {
+      const response = await axios.get(` https://84975bd346fc.ngrok-free.app/api/registerVehicle`, {
         params: { idCollector }
       });
       if (!Array.isArray(response.data)) {
@@ -89,7 +89,7 @@ export default function ListVehicle() {
     }
 
     try {
-      const response = await axios.put(`https://2a600c282efc.ngrok-free.app/api/registerVehicle/${selectedVehicle.idRegisterVehicle}`, {
+      const response = await axios.put(` https://84975bd346fc.ngrok-free.app/api/registerVehicle/${selectedVehicle.idRegisterVehicle}`, {
         carBrand: updatedVehicle.carBrand,
         carModel: updatedVehicle.carModel || null,
         carLicensePlate: updatedVehicle.carLicensePlate,

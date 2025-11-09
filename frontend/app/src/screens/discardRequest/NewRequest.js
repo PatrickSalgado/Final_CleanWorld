@@ -1,12 +1,23 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  Platform,
+  SafeAreaView,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 import { AppContext } from "../../context/AppContext";
 
-const BASE_URL = "https://2a600c282efc.ngrok-free.app";
+const BASE_URL = " https://84975bd346fc.ngrok-free.app";
 
 const VOLUME_SIZES = ["Pequeno", "Médio", "Grande", "Muito grande"];
-const WASTE_TYPES = ["", "Papel", "Plástico", "Metal", "Vidro", "Orgânico", "Eletrônico", "Madeira", "Entulho", "Outros"];
 
 function toBrazilDate(iso) {
   if (!iso) return "";
@@ -16,6 +27,7 @@ function toBrazilDate(iso) {
 
 export default function RegisterOrderScreen({ navigation }) {
   const { idUser } = useContext(AppContext);
+
   const [quantityVolume, setQuantityVolume] = useState("");
   const [volumeSize, setVolumeSize] = useState("");
   const [collectionDate, setCollectionDate] = useState("");
@@ -28,7 +40,8 @@ export default function RegisterOrderScreen({ navigation }) {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   function validate() {
-    if (!quantityVolume || Number(quantityVolume) <= 0) return "Quantidade de volumes inválida.";
+    if (!quantityVolume || Number(quantityVolume) <= 0)
+      return "Quantidade de volumes inválida.";
     if (!volumeSize) return "Selecione o tamanho do volume.";
     if (!collectionDate) return "Informe a data da coleta.";
     if (!collectionTime) return "Informe o horário da coleta.";
@@ -70,7 +83,10 @@ export default function RegisterOrderScreen({ navigation }) {
         return;
       }
 
-      Alert.alert("Sucesso", `Solicitação criada! Protocolo: #${data.idRegisterOrder ?? data.insertId ?? ""}`);
+      Alert.alert(
+        "Sucesso",
+        `Solicitação criada! Protocolo: #${data.idRegisterOrder ?? data.insertId ?? ""}`
+      );
       navigation.goBack();
     } catch (error) {
       Alert.alert("Erro", "Falha de conexão com o servidor.");
@@ -78,140 +94,224 @@ export default function RegisterOrderScreen({ navigation }) {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>♻️ Solicitar Descarte</Text>
+  <LinearGradient colors={["#3CB371", "#2E8B57"]} style={styles.container}>
+    {/* Header igual ao da outra tela */}
+    <View style={styles.header}>
+      <Text style={styles.headerText}>♻️ Solicitar Descarte</Text>
+      <Text style={styles.subHeaderText}>Informe os dados para agendar a coleta</Text>
+    </View>
 
-      <Text style={styles.label}>Quantidade de Volumes *</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ex: 4"
-        value={quantityVolume}
-        onChangeText={setQuantityVolume}
-        keyboardType="number-pad"
-      />
+      <View style={styles.box}>
+        <Text style={styles.label}>Quantidade de Volumes *</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ex: 4"
+          value={quantityVolume}
+          onChangeText={setQuantityVolume}
+          keyboardType="number-pad"
+          placeholderTextColor="#7aa58e"
+        />
 
-      <Text style={styles.label}>Tamanho do Volume *</Text>
-      <View style={styles.rowWrap}>
-        {VOLUME_SIZES.map((opt) => (
-          <TouchableOpacity
-            key={opt}
-            style={[styles.chip, volumeSize === opt && styles.chipActive]}
-            onPress={() => setVolumeSize(opt)}
-          >
-            <Text style={[styles.chipText, volumeSize === opt && styles.chipTextActive]}>{opt}</Text>
-          </TouchableOpacity>
-        ))}
+        <Text style={styles.label}>Tamanho do Volume *</Text>
+        <View style={styles.rowWrap}>
+          {VOLUME_SIZES.map((opt) => (
+            <TouchableOpacity
+              key={opt}
+              style={[styles.chip, volumeSize === opt && styles.chipActive]}
+              onPress={() => setVolumeSize(opt)}
+            >
+              <Text style={[styles.chipText, volumeSize === opt && styles.chipTextActive]}>
+                {opt}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <Text style={styles.label}>Data da Coleta *</Text>
+        <View style={styles.inputIconRow}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginRight: 8 }]}
+            value={collectionDate}
+            onChangeText={setCollectionDate}
+            placeholder="DD-MM-AAAA"
+            placeholderTextColor="#7aa58e"
+            onFocus={() => setShowDatePicker(true)}
+          />
+          <Ionicons name="calendar-outline" size={22} color="#1b5e20" />
+        </View>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={(_, d) => {
+              setShowDatePicker(false);
+              if (d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, "0");
+                const day = String(d.getDate()).padStart(2, "0");
+                setCollectionDate(`${day}-${m}-${y}`);
+              }
+            }}
+          />
+        )}
+
+        <Text style={styles.label}>Horário da Coleta *</Text>
+        <View style={styles.inputIconRow}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginRight: 8 }]}
+            value={collectionTime}
+            onChangeText={setCollectionTime}
+            placeholder="HH:MM"
+            placeholderTextColor="#7aa58e"
+            onFocus={() => setShowTimePicker(true)}
+          />
+          <Ionicons name="time-outline" size={22} color="#1b5e20" />
+        </View>
+
+        {showTimePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="time"
+            is24Hour={true}
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={(_, t) => {
+              setShowTimePicker(false);
+              if (t) {
+                const hh = String(t.getHours()).padStart(2, "0");
+                const mm = String(t.getMinutes()).padStart(2, "0");
+                setCollectionTime(`${hh}:${mm}`);
+              }
+            }}
+          />
+        )}
+
+        <Text style={styles.label}>Endereço Completo *</Text>
+        <TextInput
+          style={styles.input}
+          value={address}
+          onChangeText={setAddress}
+          placeholder="Rua, número, bairro e cidade ..."
+          placeholderTextColor="#7aa58e"
+        />
+
+        <Text style={styles.label}>Descrição do Material</Text>
+        <TextInput
+          style={[styles.input, { minHeight: 80, textAlignVertical: "top" }]}
+          value={materialDescription}
+          onChangeText={setMaterialDescription}
+          multiline
+          placeholder="Detalhe o material (ex.: caixas de papelão, eletrônicos, etc.)"
+          placeholderTextColor="#7aa58e"
+        />
+
+        <Text style={styles.label}>Tipo de Resíduo</Text>
+        <TextInput
+          style={styles.input}
+          value={wasteType}
+          onChangeText={setWasteType}
+          placeholder="Reciclável, Eletrônico, Orgânico, Outros..."
+          placeholderTextColor="#7aa58e"
+        />
+
+        <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+          <Text style={styles.saveButtonText}>Salvar Alterações</Text>
+        </TouchableOpacity>
       </View>
-
-      <Text style={styles.label}>Data da Coleta *</Text>
-      <TextInput
-        style={styles.input}
-        value={collectionDate}
-        onChangeText={setCollectionDate}
-        placeholder="DD-MM-AAAA"
-        onFocus={() => setShowDatePicker(true)}
-      />
-
-      {showDatePicker && (
-        <DateTimePicker
-          value={new Date()}
-          mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={(_, d) => {
-            setShowDatePicker(false);
-            if (d) {
-              const y = d.getFullYear();
-              const m = String(d.getMonth() + 1).padStart(2, "0");
-              const day = String(d.getDate()).padStart(2, "0");
-              setCollectionDate(`${day}-${m}-${y}`);
-            }
-          }}
-        />
-      )}
-
-      <Text style={styles.label}>Horário da Coleta *</Text>
-      <TextInput
-        style={styles.input}
-        value={collectionTime}
-        onChangeText={setCollectionTime}
-        placeholder="HH:MM"
-        onFocus={() => setShowTimePicker(true)}
-      />
-
-      {showTimePicker && (
-        <DateTimePicker
-          value={new Date()}
-          mode="time"
-          is24Hour={true}
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={(_, t) => {
-            setShowTimePicker(false);
-            if (t) {
-              const hh = String(t.getHours()).padStart(2, "0");
-              const mm = String(t.getMinutes()).padStart(2, "0");
-              setCollectionTime(`${hh}:${mm}`);
-            }
-          }}
-        />
-      )}
-
-      <Text style={styles.label}>Endereço Completo *</Text>
-      <TextInput style={styles.input} value={address} onChangeText={setAddress} placeholder="Rua, número, bairro e cidade ..." />
-
-      <Text style={styles.label}>Descrição do Material</Text>
-      <TextInput
-        style={[styles.input, { minHeight: 80 }]}
-        value={materialDescription}
-        onChangeText={setMaterialDescription}
-        multiline
-      />
-
-      <Text style={styles.label}>Tipo de Resíduo</Text>
-      <TextInput
-        style={[styles.input, { minHeight: 40 }]}
-        value={materialDescription}
-        onChangeText={setWasteType}
-        placeholder="Resíduo Hospitalar, Eletrônico, Reciclável, Outros ..." 
-        multiline
-      /> 
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Enviar Solicitação</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  );
+  </LinearGradient>
+);
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#f0f0f0" },
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 12 },
-  label: { marginTop: 12, marginBottom: 6, fontSize: 16, fontWeight: "600" },
-  input: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 10,
+  // === Container com gradiente (igual à outra página) ===
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20,
   },
-  rowWrap: { flexDirection: "row", flexWrap: "wrap", marginBottom: 10 },
+
+  // === Header central ===
+  header: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#ffffff",
+  },
+  subHeaderText: {
+    fontSize: 14,
+    color: "#f1f8e9",
+    marginTop: 2,
+  },
+
+  // === Card branco (mesma estética do profileBox) ===
+  box: {
+    backgroundColor: "#ffffffee",
+    padding: 20,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+
+  // === Form ===
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#1b5e20",
+    marginBottom: 4,
+    marginTop: 12,
+  },
+  input: {
+    backgroundColor: "#e8f5e9",
+    padding: 12,
+    borderRadius: 10,
+    fontSize: 16,
+    color: "#000",
+  },
+
+  inputIconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  // Chips (mantidos, mas com cores compatíveis)
+  rowWrap: { flexDirection: "row", flexWrap: "wrap" },
   chip: {
-    backgroundColor: "#ddd",
+    backgroundColor: "#d7efe4",
     borderRadius: 16,
     paddingVertical: 8,
     paddingHorizontal: 14,
     marginRight: 8,
     marginBottom: 8,
+    borderWidth: 1,
+    borderColor: "#cfe8db",
   },
-  chipActive: { backgroundColor: "#2e7d32" },
-  chipText: { color: "#000" },
-  chipTextActive: { color: "#fff" },
-  button: {
-    backgroundColor: "#2e8b57",
-    borderRadius: 12,
+  chipActive: { backgroundColor: "#1b5e20" },
+  chipText: { color: "#184e36", fontWeight: "600" },
+  chipTextActive: { color: "#fff", fontWeight: "700" },
+
+  // Botão igual ao da outra tela
+  saveButton: {
+    backgroundColor: "#43a047",
     paddingVertical: 14,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: 20,
-    marginBottom: 40,
+    marginTop: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  saveButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "700",
+  },
 });

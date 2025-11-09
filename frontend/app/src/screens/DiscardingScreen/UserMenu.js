@@ -17,8 +17,8 @@ export default function UserMenu({ navigation }) {
     const fetchStats = async () => {
       try {
         const [acceptedResponse, registeredResponse] = await Promise.all([
-            axios.get(`https://2a600c282efc.ngrok-free.app/api/user/total/${idUser}`),
-            axios.get(`https://2a600c282efc.ngrok-free.app/api/registerOrder/count/stats/${idUser}`)
+            axios.get(` https://84975bd346fc.ngrok-free.app/api/user/total/${idUser}`),
+            axios.get(` https://84975bd346fc.ngrok-free.app/api/registerOrder/count/stats/${idUser}`)
       ]);
         setStats({
           totalRegistered: registeredResponse.data.totalRegistered || 0,

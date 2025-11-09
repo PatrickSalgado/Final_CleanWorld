@@ -16,7 +16,7 @@ export default function OrderList() {
     }
 
     try {
-      const response = await axios.get(`https://2a600c282efc.ngrok-free.app/api/registerOrder`, {
+      const response = await axios.get(` https://84975bd346fc.ngrok-free.app/api/registerOrder`, {
         params: { idCollector }
       });
       const data = response.data;
@@ -71,7 +71,7 @@ export default function OrderList() {
 
       console.log("Dados enviados na requisição PUT:", payload);
 
-      await axios.put(`https://2a600c282efc.ngrok-free.app/api/registerOrder/${orderId}`, payload);
+      await axios.put(` https://84975bd346fc.ngrok-free.app/api/registerOrder/${orderId}`, payload);
 
       Alert.alert("Pedido aceito", "Você aceitou o pedido com sucesso!");
 
@@ -94,7 +94,7 @@ export default function OrderList() {
     }
 
     try {
-      await axios.post(`https://2a600c282efc.ngrok-free.app/api/registerOrder/${orderId}/reject`, {
+      await axios.post(` https://84975bd346fc.ngrok-free.app/api/registerOrder/${orderId}/reject`, {
         idCollector
       });
 
