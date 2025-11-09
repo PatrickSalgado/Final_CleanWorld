@@ -15,6 +15,7 @@ export default function DiscardingProfile({ navigation }) {
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -115,7 +116,7 @@ export default function DiscardingProfile({ navigation }) {
         phone: phone.replace(/\D/g, ''),
         birthDate,
         email,
-        // ❌ senha não enviada para não alterar
+        password: password || undefined,
       });
 
       Alert.alert('Sucesso', 'Alterações salvas com sucesso!');
@@ -177,9 +178,11 @@ export default function DiscardingProfile({ navigation }) {
 
         <Text style={styles.label}>Senha</Text>
         <TextInput
-          style={[styles.input, styles.inputDisabled]}
-          value={"********"}
-          editable={false}
+         style={styles.input}
+          placeholder="Digite uma nova senha"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
